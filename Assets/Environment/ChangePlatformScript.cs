@@ -18,7 +18,6 @@ public class ChangePlatformScript : MonoBehaviour
         obj = gameObject.AddComponent<changeGameObjectPos>();
         obj.SetGameObjects(Player, Platform);
     }
-    
 
     void Update()
     {
@@ -29,7 +28,8 @@ public class ChangePlatformScript : MonoBehaviour
                 obj.doOnlyOnce = false;
                 obj.state.stateX = obj.state.stateY = obj.state.stateZ = obj.state.stateZrot = obj.state.playerStateY = obj.state.playerStateYrot = false;
             }
-            obj.ChangePos(true);
+            else
+                obj.ChangePos(true);
         }
 
         else if (changeToPosZero == true)
@@ -37,9 +37,11 @@ public class ChangePlatformScript : MonoBehaviour
             if (obj.state.stateX == true && obj.state.stateY == true && obj.state.stateZ == true && obj.state.stateZrot == true && obj.state.playerStateY == true && obj.state.playerStateYrot == true) {
                 changeToPosZero = false;
                 obj.doOnlyOnce = false;
+                obj.isPlayerDown = false;
                 obj.state.stateX = obj.state.stateY = obj.state.stateZ = obj.state.stateZrot = obj.state.playerStateY = obj.state.playerStateYrot = false;
             }
-            obj.ChangePos(false);
+            else
+                obj.ChangePos(false);
         }
     }
 
@@ -53,6 +55,8 @@ public class ChangePlatformScript : MonoBehaviour
                 changeToPosZero = false;
 
                 change = false;
+                Player.GetComponent<PlayerControls>().PlayerChangingPos = true;
+                Debug.Log("Going up");
             }
 
             else if (change == false)
@@ -61,106 +65,12 @@ public class ChangePlatformScript : MonoBehaviour
                 changeToPosZero = true;
 
                 change = true;
+                Player.GetComponent<PlayerControls>().PlayerChangingPos = false;
+                Debug.Log("Going down");
             }
         }
     }
-
-    /*
-    void ChangePlatformPosToNextPos() {
-
-        // These if statements icrement the pos and rot values
-
-        if (xPos >= 0.0f) xPos -= 0.1f;
-
-        if (yPos <= 10.0f) yPos += 0.1f;
-
-        if (zPos >= 35.0f) zPos -= 0.1f;
-
-        if (zRotation >= 0.0f) zRotation -= 0.1f * 3.0f;
-
-        // These if statements set the position and rotation to the wanted values
-        // Becaues the games runtime you cannot set the values to the corret numbers
-        // with the first if statements
-
-        if (xPos < 0.0f) xPos = 0.0f;
-        if (yPos > 10.0f) yPos = 10.0f;
-        if (zPos < 35.0f) zPos = 35.0f;
-        if (zRotation < 0.0f) zRotation = 0.0f;
-
-        SecondPlatform.transform.position = new Vector3(xPos, yPos, zPos);
-        SecondPlatform.transform.rotation = Quaternion.Euler(0.0f, 0.0f, zRotation);
-    }
-
-    void ChangePlayerPosToTopPlatform()
-    {
-        if (zRotation == 0.0f)
-        {
-            if (playerYPos <= 8.5f) playerYPos += 0.1f;
-            if (playerYPos > 8.5f) playerYPos = 8.5f;
-            if (playerZRotation <= 180.0f) playerZRotation += 2.5f;
-
-            Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            Player.GetComponent<Rigidbody>().useGravity = false;
-            Player.transform.position = new Vector3(0.0f, playerYPos, 2.0f);
-            Player.transform.rotation = Quaternion.Euler(0.0f, 0.0f, playerZRotation);
-
-            if (playerYPos == 8.5f)
-            {
-                Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            }
-
-           // if (playerYPos == 8.5f && playerZRotation == 180.0f) changePlayerPosToBottom = false;
-
-            if (Player.transform.rotation.z < 0.0f)
-                Player.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 180.0f);
-        }
-    }
-
-    void ChangePlatformPosToPreviousPos()
-    {
-        if (playerZRotation == 0.0f)
-        {
-            if (xPos <= 10.39f) xPos += 0.1f;
-
-            if (yPos >= 4.31f) yPos -= 0.1f;
-
-            if (zPos <= 41.9f) zPos += 0.1f;
-
-            if (zRotation <= 45.0f) zRotation += 0.1f * 3.0f;
-
-            if (xPos > 10.39f) xPos = 10.39f;
-            if (yPos < 4.31f) yPos = 4.31f;
-            if (zPos > 41.9f) zPos = 41.9f;
-            if (zRotation > 45.0f) zRotation = 45.0f;
-
-            SecondPlatform.transform.position = new Vector3(xPos, yPos, zPos);
-            SecondPlatform.transform.rotation = Quaternion.Euler(0.0f, 0.0f, zRotation);
-        }
-    }
-
-    void ChangePlayerPosToBottomPlatform()
-    {
-        if (playerYPos >= 1.5f) playerYPos -= 0.1f;
-        if (playerYPos < 1.5f) playerYPos = 1.5f;
-        if (playerZRotation >= 0.0f) playerZRotation -= 2.5f;
-        if (playerZRotation < 0.0f) playerZRotation = 0.0f;
-
-        Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        Player.GetComponent<Rigidbody>().useGravity = false;
-        Player.transform.position = new Vector3(0.0f, playerYPos, 2.0f);
-        Player.transform.rotation = Quaternion.Euler(0.0f, 0.0f, playerZRotation);
-
-        if (playerYPos == 1.5f)
-        {
-            Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-        }
-
-        //if (playerYPos == 1.5f && playerZRotation == 0.0f) changePlayerPosToTop = false;
-    }
-    */
-
 }
-
 
     /*
     xPos 10.39f --> 0.0f -- 0.0f --> 10.39f
@@ -192,6 +102,7 @@ public class changeGameObjectPos : MonoBehaviour
     public bool _changePosOfPlatformToNewPos = false;
     public bool _changePosOfPlatformToPreviousPos = false;
     public bool doOnlyOnce = false;
+    public bool isPlayerDown = false;
 
     public stateOfPosition state;
 
@@ -206,8 +117,8 @@ public class changeGameObjectPos : MonoBehaviour
         state.stateZrot = false;
         state.playerStateY = false;
         state.playerStateYrot = false;
-    }
 
+    }
     public void SetState() {
 
         state.stateX = true;
@@ -215,7 +126,6 @@ public class changeGameObjectPos : MonoBehaviour
         state.stateZ = true;
         state.stateZrot = true;
     }
-
     public void ChangePos(bool SetToPos) {
 
         if (SetToPos == true) {
@@ -235,6 +145,11 @@ public class changeGameObjectPos : MonoBehaviour
                     _changePosOfPlatformToNewPos = true;
                     _changePosOfPlatformToPreviousPos = false;
                     doOnlyOnce = true;
+
+
+                    Debug.Log("Changing player boxcollider");
+                    Player.GetComponent<BoxCollider>().center = new Vector3(0.0f, 0.0f, 0.0f);
+                    Player.GetComponent<BoxCollider>().size = new Vector3(1.0f, 1.0f, 1.0f);
                 }
             }
             else if (doOnlyOnce == true)
@@ -270,7 +185,6 @@ public class changeGameObjectPos : MonoBehaviour
             }
         }
     }
-
     void changePlayerPos()
     {
         if (_changePosOfPlatformToNewPos == true)
@@ -283,13 +197,12 @@ public class changeGameObjectPos : MonoBehaviour
                 YPosForPlayer = 8.5f;
                 state.playerStateY = true;
             }
-            if (ZPlayerRot > 180.0f)
+            if (ZPlayerRot !>= 180.0f)
             {
                 ZPlayerRot = 180.0f;
                 state.playerStateYrot = true;
             }
 
-            Debug.Log(ZPlayerRot);
             Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             Player.GetComponent<Rigidbody>().useGravity = false;
             Player.transform.position = new Vector3(0.0f, YPosForPlayer, 2.0f);
@@ -303,7 +216,16 @@ public class changeGameObjectPos : MonoBehaviour
 
         else if (_changePosOfPlatformToPreviousPos == true) {
 
-            if (YPosForPlayer >= 1.5f) YPosForPlayer -= 0.05f;
+            if (YPosForPlayer >= 1.5f)
+            {
+                if (YPosForPlayer >= 5.0f && YPosForPlayer <= 5.5f)
+                {
+                    isPlayerDown = true;
+                    Debug.Log("Player is going down");
+                }
+
+                YPosForPlayer -= 0.05f;
+            }
             if (ZPlayerRot >= 0.0f) ZPlayerRot -= 2.5f;
 
             if (YPosForPlayer < 1.5f)
@@ -328,7 +250,6 @@ public class changeGameObjectPos : MonoBehaviour
             }
         }
     }
-
     void changePlatformPos() {
 
         if (_changePosOfPlatformToNewPos == true)
@@ -342,32 +263,28 @@ public class changeGameObjectPos : MonoBehaviour
             {
                 XPosForPlatform = 0.0f;
                 state.stateX = true;
-                Debug.Log("stateX is set");
             }
             if (YPosForPlatform > 10.0f)
             {
                 YPosForPlatform = 10.0f;
                 state.stateY = true;
-                Debug.Log("stateY is set");
             }
             if (ZPosForPlatform < 35.0f)
             {
                 ZPosForPlatform = 35.0f;
                 state.stateZ = true;
-                Debug.Log("stateZ is set");
             }
             if (ZPlatformRot < 0.0f)
             {
                 ZPlatformRot = 0.0f;
                 state.stateZrot = true;
-                Debug.Log("stateZrot is set");
             }
 
             Platform.transform.position = new Vector3(XPosForPlatform, YPosForPlatform, ZPosForPlatform);
             Platform.transform.rotation = Quaternion.Euler(0.0f, 0.0f, ZPlatformRot);
         }
 
-        else if (_changePosOfPlatformToPreviousPos == true)
+        else if (_changePosOfPlatformToPreviousPos == true && isPlayerDown == true)
         {
             if (XPosForPlatform <= 10.39f) XPosForPlatform += 0.1f;
             if (YPosForPlatform >= 4.31f) YPosForPlatform -= 0.1f;
